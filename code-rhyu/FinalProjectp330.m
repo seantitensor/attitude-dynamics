@@ -14,6 +14,7 @@ r_cp = [0.2; 0.05; 0];
 % state variables
 q0 = [1; 0; 0; 0]; 
 w0 = [0.1; -0.05; 0.02]; 
+a0 = []
 X0 = [q0; w0];
 
 % time
@@ -29,3 +30,24 @@ q_squared = q_out.^2;
 sum_sq = sum(q_squared, 2);
 mag = sqrt(sum_sq);
 q_out = q_out ./ mag;
+
+% plotting
+figure('Name', 'Spacecraft Attitude Simulation');
+
+% Subplot 1: Quaternions (Orientation)
+subplot(2,1,1);
+plot(t, q_out, 'LineWidth', 1.5);
+grid on;
+title('Attitude Orientation (Quaternions)');
+ylabel('Unitless Value');
+legend('q_w', 'q_x', 'q_y', 'q_z');
+ylim([-1.1 1.1]); % Quaternions stay between -1 and 1
+
+% Subplot 2: Angular Velocity (Rotational Speed)
+subplot(2,1,2);
+plot(t, X(:, 5:7), 'LineWidth', 1.5);
+grid on;
+title('Angular Velocity (Body Frame)');
+xlabel('Time (seconds)');
+ylabel('Velocity (rad/s)');
+legend('\omega_x', '\omega_y', '\omega_z');
