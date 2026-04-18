@@ -66,3 +66,45 @@ title('Angular Velocity (Body Frame)');
 xlabel('Time (seconds)');
 ylabel('Velocity (rad/s)');
 legend('\omega_x', '\omega_y', '\omega_z');
+
+% =========================================================================
+% MILESTONE PROOF PLOTS
+% Run this section after your ode45 solver completes.
+% Assumes: 
+% tout = time vector
+% X(:,1:4) = Quaternions [qw, qx, qy, qz]
+% X(:,5:7) = Angular Velocities [wx, wy, wz]
+% I = 3x3 Inertia Tensor used in the simulation
+% =========================================================================
+
+% Total Rotational Kinetic Energy
+% Used for the "Windmill" case (to show a parabola) and "Beating" (to show flatline)
+% Calculate Kinetic Energy: T = 0.5 * w' * I * w at each time step
+T_energy = zeros(length(t), 1);
+for i = 1:length(t)
+    w_vec = [X(i,5); X(i,6); X(i,7)];
+    T_energy(i) = 0.5 * w_vec' * I * w_vec;
+end
+figure('Name', 'Rotational Kinetic Energy', 'Color', 'w');
+plot(t, T_energy, 'k', 'LineWidth', 2);
+grid on;
+title('System Kinetic Energy over Time');
+xlabel('Time (s)');
+ylabel('Rotational Kinetic Energy (Joules)');
+% Windmill: Should look like an accelerating curve (x^2).
+% Beating: Should be a perfectly flat horizontal line (energy conserved).
+
+
+% 3D Phase Space
+% Used to contrast the "Weather Vane" (closed loop) with "Chaos" (Strange Attractor)
+figure('Name', '3D Phase Space Topology', 'Color', 'w');
+plot3(X(:,5), X(:,6), X(:,7), 'm', 'LineWidth', 1.2);
+grid on; hold on;
+% Mark the starting state
+plot3(X(1,5), X(1,6), X(1,7), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 8); 
+title('3D Phase Space: \omega_x vs \omega_y vs \omega_z');
+xlabel('\omega_x (Roll) [rad/s]');
+ylabel('\omega_y (Pitch) [rad/s]');
+zlabel('\omega_z (Yaw) [rad/s]');
+legend('Phase Trajectory', 'Initial State', 'Location', 'Best');
+view(3); % Sets default 3D isometric view

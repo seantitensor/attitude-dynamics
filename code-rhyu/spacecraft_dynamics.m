@@ -1,6 +1,7 @@
 function dXdt = spacecraft_dynamics(t, X, I, rho, v_orb, Cd, geom)
     % state variables
-    q = X(1:4); 
+    q = X(1:4);
+    q = q / norm(q);
     w = X(5:7);
 
     % rotate q
