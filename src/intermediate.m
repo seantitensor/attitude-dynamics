@@ -1,4 +1,4 @@
-%% Experiment 1: The Intermediate Axis Theorem (Dzhanibekov Effect)
+%% The Intermediate Axis Theorem
 %
 % Demonstrates that for a rigid body with three distinct principal moments
 % of inertia, rotation about the INTERMEDIATE axis is unstable while
@@ -52,28 +52,7 @@ for k = 1:3
     title(cases(k).name);
     grid on;
 end
-sgtitle('Dzhanibekov Effect: Stability of Rotation About Principal Axes');
-
-%% Bonus: Kinetic energy and angular momentum should be conserved
-% (good sanity check for the solver)
-figure('Position', [150 150 900 400]);
-for k = 1:3
-    w = results{k}.X(:,5:7)';
-    KE = 0.5 * sum(w .* (I*w), 1);
-    H  = vecnorm(I*w, 2, 1);
-    subplot(1,2,1); hold on;
-    plot(results{k}.t, KE/KE(1), 'LineWidth', 1.2);
-    subplot(1,2,2); hold on;
-    plot(results{k}.t, H/H(1),  'LineWidth', 1.2);
-end
-subplot(1,2,1);
-xlabel('Time (s)'); ylabel('KE / KE(0)');
-title('Kinetic Energy (normalized)'); grid on;
-legend({cases.name}, 'Location','south');
-subplot(1,2,2);
-xlabel('Time (s)'); ylabel('||H|| / ||H(0)||');
-title('Angular Momentum Magnitude (normalized)'); grid on;
-legend({cases.name}, 'Location','south');
+sgtitle('Stability of Rotation About Principal Axes');
 
 %% ---------- RHS for free rotation (no torques, no control) ----------
 function dxdt = rhs_free(~, x, I)

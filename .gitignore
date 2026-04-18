@@ -1,0 +1,31 @@
+# --- MATLAB Specific ---
+*.asv              # Auto-save files
+*.slxc             # Simulink cache files
+*.mex* # Compiled MEX files (platform-specific)
+*.log              # Log files
+slprj/             # Simulink project folder
+codegen/           # Generated C/C++ code
+derivedData/       # MATLAB data caches
+
+# --- Data and Figures (Optional but recommended) ---
+# Uncomment the next line if you want to ignore all .mat data files
+# *.mat
+*.fig              # Figures (often better to regenerate from code)
+
+# --- macOS System Files ---
+.DS_Store          # Folder settings
+.AppleDouble
+.LSOverride
+._* # AppleDouble header files
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# --- Windows / General ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini
