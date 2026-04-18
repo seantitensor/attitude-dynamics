@@ -1,61 +1,86 @@
-%% test 1
-% parameters 
-% environ constant
-rho = 1.225e-12;
-v_orb = 7800;
-Cd = 2.2;
+%{
+Geometry Type	Dominant State	Physical Driver
+Symmetric / Low Offset	Stable Libration	Restoring Torque (The Spring)
+Intermediate Axis Heavy	Chaotic Tumbling	Inertia Cross-Coupling (The Saddle)
+Asymmetric (Anemometer)	Constant Acceleration	Net Work Extraction (The Motor)
+High Spin / Max Axis	Precessional Beats	Gyroscopic Stiffness (The Gyro)
+%}
+
+%% Beating of 2 axis
 
 % state variables
-M = 10;
-L = 100;
-q0 = [1; 0; 0; 0]; 
-w0 = [0; 0.1; 0];
-A = L^2;
-h = L/2;
-geom = [1, 0, 0,  A,  h-20, 0, 0;  % +X Face
-        -1, 0, 0,  A, -h-20, 0, 0;  % -X Face
-        0, 1, 0,  A,  0-20, h, 0;  % +Y Face
-        0,-1, 0,  A,  0-20,-h, 0;  % -Y Face
-        0, 0, 1,  A,  0-20, 0, h;  % +Z Face
-        0, 0,-1,  A,  0-20, 0,-h]; % -Z Face
+M = 5;
+q_raw = [1; 0; 0; 0]; 
+q0 = q_raw / norm(q_raw);
+w0 = [0.001; 0.001; 0.001]; 
 X0 = [q0; w0];
+a = 100; b = 100; c = 100;
+offx = -20; offy = 0; offz = 0;
+geom = [ 1, 0, 0,  b*c,  a/2 + offx, 0 + offy, 0 + offz;   % +X
+         -1, 0, 0,  b*c, -a/2 + offx, 0 + offy, 0 + offz;   % -X
+         0, 1, 0,  a*c,  0 + offx, b/2 + offy, 0 + offz;       % +Y
+         0, -1, 0,  a*c,  0 + offx, -b/2 + offy, 0 + offz;      % -Y
+         0, 0, 1,  a*b,  0 + offx, 0 + offy, c/2 + offz;       % +Z
+         0, 0, -1,  a*b,  0 + offx, 0 + offy, -c/2 + offz];     % -Z
 
-%% 2
-
-% state variables
-M = 10;
-L = 100;
-q0 = [0; 0; 1; 0]; 
-w0 = [0; 0.1; 0]; 
-A = L^2;
-h = L/2;
-geom = [1, 0, 0,  A,  h-20, 0, 0;  % +X Face
-        -1, 0, 0,  A, -h-20, 0, 0;  % -X Face
-        0, 1, 0,  A,  0-20, h, 0;  % +Y Face
-        0,-1, 0,  A,  0-20,-h, 0;  % -Y Face
-        0, 0, 1,  A,  0-20, 0, h;  % +Z Face
-        0, 0,-1,  A,  0-20, 0,-h]; % -Z Face
-X0 = [q0; w0];
-
-%% 3
-
-rho = 1.225e-12;
-v_orb = 7800;
-Cd = 2.2;
+%% stable weather vane 
 
 % state variables
-M = 50;
-q0 = [1; 0; 0; 0]; 
-w0 = [0; 0.004; 0];
+M = 5;
+q_raw = [1; 0; 0; 0]; 
+q0 = q_raw / norm(q_raw);
+w0 = [0.001; 0.001; 0.001]; 
 X0 = [q0; w0];
 a = 10; b = 4; c = 2;
-off = -1;
-geom = [ 1, 0, 0,  b*c,  a/2 + off, 0, 0;   % +X
-        -1, 0, 0,  b*c, -a/2 + off, 0, 0;   % -X
-         0, 1, 0,  a*c,  off, b/2, 0;       % +Y
-         0,-1, 0,  a*c,  off, -b/2, 0;      % -Y
-         0, 0, 1,  a*b,  off, 0, c/2;       % +Z
-         0, 0,-1,  a*b,  off, 0, -c/2];     % -Z
+offx = -3; offy = 0; offz = 0;
+geom = [ 1, 0, 0,  b*c,  a/2 + offx, 0 + offy, 0 + offz;   % +X
+         -1, 0, 0,  b*c, -a/2 + offx, 0 + offy, 0 + offz;   % -X
+         0, 1, 0,  a*c,  0 + offx, b/2 + offy, 0 + offz;       % +Y
+         0, -1, 0,  a*c,  0 + offx, -b/2 + offy, 0 + offz;      % -Y
+         0, 0, 1,  a*b,  0 + offx, 0 + offy, c/2 + offz;       % +Z
+         0, 0, -1,  a*b,  0 + offx, 0 + offy, -c/2 + offz];     % -Z
+
+%% 5 accelerate
+
+% state variables
+M = 5;
+q_raw = [1; 0; 0; 0]; 
+q0 = q_raw / norm(q_raw);
+w0 = [0.00; 0.00; 0.001]; 
+X0 = [q0; w0];
+a = 0.1; b = 4; c = 4;
+offx = 0; offy = 0; offz = 0;
+paddleoff = 25;
+geom = [ 1, 0, 0,  b*c,  a/2 + offx, 0 + offy, 0 + offz;   % +X
+         -1, 0, 0,  b*c,  -a/2 + offx, 0 + offy, 0 + offz;   % -X
+         0, 1, 0,  a*c,  0 + offx, b/2 + offy, 0 + offz;       % +Y
+         0, -1, 0,  a*c,  0 + offx, -b/2 + offy, 0 + offz;      % -Y
+         1, 0, 0,  40,  0 + offx, paddleoff + offy, 0 + offz;       % +Z
+         -1, 0, 0,  5,  0 + offx, paddleoff + offy, 0 + offz];     % -Z
 
 % Inertia
-I = diag([ (1/12)* M *(b^2+c^2), (1/12)* M *(a^2+c^2), (1/12)* M *(a^2+b^2) ]);
+I_bus = diag([ (1/12)* M *(b^2+c^2), (1/12)* M *(a^2+c^2), (1/12)* M *(a^2+b^2) ]);
+m_p = 0.1; 
+r_p = [0; paddleoff; 0];
+S = [0 -r_p(3) r_p(2); r_p(3) 0 -r_p(1); -r_p(2) r_p(1) 0];
+I_paddle = -m_p * (S * S); 
+I = I_bus + I_paddle;
+
+%% chaos
+
+% state variables
+M = 5;
+q_raw = [1; 0; 0; 0]; 
+q0 = q_raw / norm(q_raw);
+w0 = [0.001; 0.001; 0.001]; 
+X0 = [q0; w0];
+a = 10; b = 2; c = 5;
+offx = 2.5; offy = 0; offz = 0;
+paddleoff = 0;
+geom = [ 1, 0, 0,  b*c,  a/2 + offx, 0 + offy, 0 + offz;   % +X
+         -1, 0, 0,  b*c,  -a/2 + offx, 0 + offy, 0 + offz;   % -X
+         0, 1, 0,  a*c,  0 + offx, b/2 + offy, 0 + offz;       % +Y
+         0, -1, 0,  a*c,  0 + offx, -b/2 + offy, 0 + offz;      % -Y
+         0, 0, 1,  b*a,  0 + offx, 0 + offy, c/2 + offz;       % +Z
+         0, 0, -1,  b*a,  0 + offx, 0 + offy, -c/2 + offz];      % -Z
+
